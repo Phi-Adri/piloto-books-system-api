@@ -55,13 +55,6 @@
 			<classifier>mule-plugin</classifier>
 		</dependency>
 		<dependency>
-			<groupId>209ef67a-ae27-4f34-965a-a34fed477013</groupId>
-			<artifactId>ejercicio_oas_a_raml</artifactId>
-			<version>1.0.1</version>
-			<classifier>raml</classifier>
-			<type>zip</type>
-		</dependency>
-		<dependency>
 			<groupId>org.mule.modules</groupId>
 			<artifactId>mule-apikit-module</artifactId>
 			<version>1.11.5</version>
@@ -77,6 +70,13 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>8.0.30</version>
+		</dependency>
+		<dependency>
+			<groupId>209ef67a-ae27-4f34-965a-a34fed477013</groupId>
+			<artifactId>ejercicio_oas_a_raml</artifactId>
+			<version>1.0.2</version>
+			<classifier>raml</classifier>
+			<type>zip</type>
 		</dependency>
 	</dependencies>
 
