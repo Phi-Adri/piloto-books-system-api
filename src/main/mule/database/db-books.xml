@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<sub-flow name="db-get-all-books-sub-flow" doc:id="8e1f45c9-6b63-4261-bf97-ef1a95c5207a" >
+		<until-successful maxRetries="5" doc:name="Until Successful" doc:id="1f44fe4c-cadf-49c9-a107-8e59595b61d8" >
+			<db:select doc:name="books" doc:id="7e65a774-dd2c-4987-ba91-0d3cd320039a" config-ref="Database_Config_mysql" >
+				<db:sql ><![CDATA[select * from books]]></db:sql>
+			</db:select>
+		</until-successful>
+	</sub-flow>
+	<sub-flow name="db-get-book-by-id-sub-flow" doc:id="6aeabdb7-9e75-44b3-83fa-f9a177248c26" >
+		<until-successful maxRetries="5" doc:name="Until Successful" doc:id="f203316d-827b-4f16-adec-28cc8a552659" >
+			<db:select doc:name="book-by-id" doc:id="25a5479f-3d4c-46ac-b4cf-0a062c131520" config-ref="Database_Config_mysql" >
+				<db:sql ><![CDATA[select * from books where id =:bookId]]></db:sql>
+				<db:input-parameters ><![CDATA[#[{
+	bookId : attributes.uriParams.bookId as Number
+}]]]></db:input-parameters>
+			</db:select>
+		</until-successful>
+	</sub-flow>
+	<sub-flow name="db-create-book-sub-flow" doc:id="59bb4c3d-d093-47b6-83e5-15db4287c066" >
+		<db:insert doc:name="create-book" doc:id="7f1e7dfe-fae7-4b73-a390-0577dee6dc04" config-ref="Database_Config_mysql" >
+			<db:sql ><![CDATA[INSERT INTO books (name, author, year) VALUES(:name, :author, :year)]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	name: payload.name,
+	author:payload.author,
+	year:payload.year
+}]]]></db:input-parameters>
+		</db:insert>
+	</sub-flow>
+	<sub-flow name="db-update-book-sub-flow" doc:id="34c0873a-e08c-4feb-bbd7-591f69e084a0" >
+		<db:update doc:name="update-book-by-id" doc:id="65a51a3e-6400-4771-b780-e6e6b0daa6f7" config-ref="Database_Config_mysql" autoGenerateKeys="true" >
+			<db:sql ><![CDATA[UPDATE books
+SET 
+	author = COALESCE(:author, author),
+    year = COALESCE(:year, year),   -- si @year viene NULL, mantiene el valor actual
+    name = COALESCE(:name, name)    -- si @name viene NULL, mantiene el valor actual
+WHERE id =:id]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	id: attributes.uriParams.'bookId' as Number,
+	year: payload.year,
+	name: payload.name,
+	author: payload.author
+}]]]></db:input-parameters>
+			<db:auto-generated-keys-column-names >
+				<db:auto-generated-keys-column-name value="id" />
+			</db:auto-generated-keys-column-names>
+		</db:update>
+	</sub-flow>
+	<sub-flow name="db-delete-book-sub-flow" doc:id="6938b476-b566-4ba4-9b96-92ad28e2d9f2" >
+		<db:delete doc:name="Delete-book-by-id" doc:id="39613e49-6b5c-4dc7-ad78-45bba53a63db" config-ref="Database_Config_mysql" >
+			<db:sql ><![CDATA[DELETE FROM books
+WHERE id =:id]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	id: attributes.uriParams.'bookId' as Number
+}]]]></db:input-parameters>
+		</db:delete>
+	</sub-flow>
+</mule>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<sub-flow name="set-author-id-sub-flow" doc:id="d87142f8-a3be-424c-a4f7-19e9adfba23d" >
+		<set-variable value="#[attributes.uriParams.authorId]" doc:name="authorId" doc:id="08806652-2fab-4d3e-b178-bef1cee0a938" variableName="authorId" />
+	</sub-flow>
+	<sub-flow name="set-book-id-sub-flow" doc:id="90ec9844-6ce8-4629-8056-b8d945424c49" >
+		<set-variable value="#[attributes.uriParams.bookId]" doc:name="bookId" doc:id="43a0061a-d230-497f-987c-9c0c6a81a9d5" variableName="bookId" />
+	</sub-flow>
+</mule>

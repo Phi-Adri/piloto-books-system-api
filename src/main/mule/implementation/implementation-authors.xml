@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="implementation-get-all-authors-flow" doc:id="35a0facd-c8f2-4c2c-b11e-2aab87f9d7ec" >
+		<logger level="INFO" doc:name="start" doc:id="d856eaf7-f023-40bf-99ea-b3b2a112e7e3" message="#[{&#10;	 correlationId: correlationId,&#10;	 payload: payload&#10;}]"/>
+		<flow-ref doc:name="db-all-authors-sub-flow" doc:id="4a255413-e7b6-448f-9a9d-a8359a066624" name="db-all-authors-sub-flow"/>
+		<ee:transform doc:name="get-all-authors-response" doc:id="0244c9da-dcc6-41e2-ba4a-5837c678e4b2" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="end" doc:id="3fc66620-91ba-49ac-adf5-4ebea678becb" message="#[{&#10;	 correlationId: correlationId	 &#10;}]"/>
+	</flow>
+	<flow name="implementation-authors-by-id-flow" doc:id="02ff0f7f-ebeb-4177-80f3-7179b515f098" >
+		<logger level="INFO" doc:name="start" doc:id="12e894e1-fe5d-4ffc-852f-fd159c3ee163" message="#[{&#10;	 correlationId: correlationId,&#10;	 payload: payload&#10;}]"/>
+		<flow-ref doc:name="set-author-id-sub-flow" doc:id="d5ed9b9c-a3e5-48e3-9c16-cdbd4710c3a8" name="set-author-id-sub-flow"/>
+		<flow-ref doc:name="db-authors-by-id-sub-flow" doc:id="e053d3ad-b389-4864-b262-4be1d6209c8c" name="db-authors-by-id-sub-flow"/>
+		<ee:transform doc:name="response-author-by-id" doc:id="e59379cc-2373-4d7a-847b-45fe90ea172c" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="end" doc:id="c8572df8-1509-4a17-9e10-25e4a31d2d6d" message="#[{&#10;	 correlationId: correlationId	 &#10;}]" />
+	</flow>
+	<flow name="implementation-create-author-flow" doc:id="9448106b-1e6a-4613-80c3-2318235a6240" >
+		<logger level="INFO" doc:name="start" doc:id="d08894d7-0f82-463f-af81-e187141733ae" message="#[{&#10;	 correlationId: correlationId,&#10;	 payload: payload&#10;}]" />
+		<flow-ref doc:name="db-authors-create-sub-flow" doc:id="53126248-dccd-48f7-875a-d689942e3fd6" name="db-authors-create-sub-flow"/>
+		<ee:transform doc:name="response-create-author" doc:id="1c24ea93-8f21-428d-aba2-92693bed2f1c">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+ "Autor creado exitosamente"
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="end" doc:id="82fb88e3-15ff-4b91-8451-bb6f9f137a36" message="#[{&#10;	 correlationId: correlationId	 &#10;}]" />
+	</flow>
+</mule>
