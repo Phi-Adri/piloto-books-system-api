@@ -133,7 +133,7 @@ output application/json
 		<flow-ref doc:name="implementation-get-all-authors-flow" doc:id="0b8c8d2b-c899-444a-b714-079a966519e8" name="implementation-get-all-authors-flow"/>
     </flow>
     <flow name="get:\books:piloto-books-system-api-config">
-		<flow-ref doc:name="implementation-get-all-authors-flow" doc:id="8ac71847-31f5-4c2a-9aeb-1777896b2f46" name="implementation-get-all-authors-flow" />
+		<flow-ref doc:name="implementation-get-all-books-flow" doc:id="8ac71847-31f5-4c2a-9aeb-1777896b2f46" name="implementation-get-all-books-flow" />
     </flow>
     <flow name="get:\authors\(authorId):piloto-books-system-api-config">
 		<flow-ref doc:name="implementation-authors-by-id-flow" doc:id="f06623f4-a5fa-40f4-abdf-d8f697b05541" name="implementation-authors-by-id-flow"/>

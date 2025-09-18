@@ -16,7 +16,8 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 			<db:select doc:name="book-by-id" doc:id="25a5479f-3d4c-46ac-b4cf-0a062c131520" config-ref="Database_Config_mysql" >
 				<db:sql ><![CDATA[select * from books where id =:bookId]]></db:sql>
 				<db:input-parameters ><![CDATA[#[{
-	bookId : attributes.uriParams.bookId as Number
+//	bookId : attributes.uriParams.bookId
+	bookId : vars.bookId
 }]]]></db:input-parameters>
 			</db:select>
 		</until-successful>
@@ -40,7 +41,7 @@ SET
     name = COALESCE(:name, name)    -- si @name viene NULL, mantiene el valor actual
 WHERE id =:id]]></db:sql>
 			<db:input-parameters ><![CDATA[#[{
-	id: attributes.uriParams.'bookId' as Number,
+	id: vars.bookId,
 	year: payload.year,
 	name: payload.name,
 	author: payload.author
@@ -55,7 +56,7 @@ WHERE id =:id]]></db:sql>
 			<db:sql ><![CDATA[DELETE FROM books
 WHERE id =:id]]></db:sql>
 			<db:input-parameters ><![CDATA[#[{
-	id: attributes.uriParams.'bookId' as Number
+	id: vars.bookId
 }]]]></db:input-parameters>
 		</db:delete>
 	</sub-flow>
