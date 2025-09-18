@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="implementation-get-all-books-flow" doc:id="43f016f8-0568-4a04-8965-9613e262eed8" >
+		<logger level="INFO" doc:name="Logger" doc:id="c5a5de4a-6504-4756-8328-f564745e3dc7" />
+		<flow-ref doc:name="db-get-all-books-sub-flow" doc:id="2060d0d7-12b2-4a6a-9998-87afbad8f616" name="db-get-all-books-sub-flow"/>
+		<ee:transform doc:name="get_all_response" doc:id="42c2f9d4-2ef4-450e-9bbd-28c40aeb81dc">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="617691c9-fedb-48a0-94cb-0196bd5e967e" />
+	</flow>
+	<flow name="implementation-get-book-by-id-flow" doc:id="b0009446-04de-473e-93da-e0bdddcbadc9" >
+		<logger level="INFO" doc:name="Logger" doc:id="199cfd4d-6ab7-4eee-a658-cfe1cc790e2b" message="Este es el boo id: #[attributes.uriParams.bookId]"/>
+		<flow-ref doc:name="db-get-book-by-id-sub-flow" doc:id="595fa373-5edb-49e6-be66-f2e9e2a4603e" name="db-get-book-by-id-sub-flow"/>
+		<ee:transform doc:name="response-book-by-id" doc:id="e1151ad8-bc16-42f1-ae3d-2374322f361b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger1" doc:id="2067a845-e0a8-4819-9c58-035215ad7939" />
+	</flow>
+	<flow name="implementation-create-book-flow" doc:id="384f9e3f-171d-4a21-8f57-1a2b197fcd7e" >
+		<logger level="INFO" doc:name="Logger" doc:id="ad3b1ad1-049b-4700-a072-568f14ecade3" />
+		<flow-ref doc:name="db-create-book-sub-flow" doc:id="6486b3aa-0ee0-4db2-8e74-722d948581c4" name="db-create-book-sub-flow" />
+		<ee:transform doc:name="response-create-book" doc:id="d0960ad9-4451-4dea-af70-e3a1095d739d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	
+	message: "Created"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger1" doc:id="8861cb43-3f9d-433e-a843-e4d01d21a482" />
+	</flow>
+	<flow name="implementation-update-by-id-book-flow" doc:id="349d6cbf-35f7-4342-9240-cf7988ef7edc" >
+		<logger level="INFO" doc:name="Logger" doc:id="201eefbe-c71a-4a45-946b-f3391e2672cf" />
+		<flow-ref doc:name="db-update-book-sub-flow" doc:id="e7a7b7d7-f6b5-4a03-8d9c-c57cc9dbcef6" name="db-update-book-sub-flow" />
+		<ee:transform doc:name="response-book-by-id" doc:id="8fc3a1ad-42d7-40da-b782-1fc9e2013b2e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	
+	message: "Updated"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger1" doc:id="bce7f3bc-8d4b-4444-8c59-ed5019fcfe1b" />
+	</flow>
+	<flow name="implementation-delete-book-flow" doc:id="a345c96f-68df-4197-b505-c58fc8171e12" >
+		<logger level="INFO" doc:name="Logger" doc:id="361b395f-03a2-4aae-9dc2-3545330c34b3" />
+		<flow-ref doc:name="db-delete-book-sub-flow" doc:id="516c664a-a1c2-4bbd-a3c4-e600e89a4ce7" name="db-delete-book-sub-flow" />
+		<ee:transform doc:name="response-delete-book-by-id" doc:id="b28e8433-d587-4767-a76a-d7e68f1308b6" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	
+	message: "Deleted"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger1" doc:id="e459e94b-c0a0-4045-903e-ede27f9ac5c9" />
+	</flow>
+</mule>

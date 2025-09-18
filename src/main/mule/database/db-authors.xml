@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="db-all-authors-sub-flow" doc:id="72079f6a-5486-4402-a211-20fb453921dc" >
+		<until-successful maxRetries="5" doc:name="Until Successful" doc:id="ae3dbb81-bcf1-461b-889c-941f2e8d01d9" >
+			<db:select doc:name="all-authors-db" doc:id="dbc7be83-3a70-433d-b2cf-848a1cee55bb" config-ref="Database_Config_mysql">
+			<db:sql><![CDATA[select * from authors]]></db:sql>
+		</db:select>
+		</until-successful>
+	</sub-flow>
+	<sub-flow name="db-authors-by-id-sub-flow" doc:id="79a9153f-e4f6-4d0a-8172-02737c3806d8" >
+		<until-successful maxRetries="5" doc:name="Until Successful" doc:id="4264f387-ff1c-46e4-94b3-4d512b196bee" >
+			<db:select doc:name="author-by-id" doc:id="ff902148-b593-414e-b113-0df26c58fca8" config-ref="Database_Config_mysql" >
+				<db:sql ><![CDATA[SELECT * FROM authors WHERE id =:authorId]]></db:sql>
+				<db:input-parameters ><![CDATA[#[{
+	authorId : attributes.uriParams.authorId as Number
+	}]]]></db:input-parameters>
+			</db:select>
+		</until-successful>
+	</sub-flow>
+	<sub-flow name="db-authors-create-sub-flow" doc:id="c192e003-39bd-45cd-b8c5-d2b1eb9f0984" >
+		<db:insert doc:name="create-author" doc:id="94f10fc0-d1ae-4e6d-9864-56ceb63339ad" config-ref="Database_Config_mysql" >
+			<db:sql ><![CDATA[INSERT INTO authors (name, country) VALUES (:name, :country);]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	name:payload.name,
+	country:payload.country
+}]]]></db:input-parameters>
+		</db:insert>
+	</sub-flow>
+</mule>
