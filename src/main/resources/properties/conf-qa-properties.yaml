@@ -2,5 +2,3 @@
   "host": "database-librarybooks.c16mwww003n1.us-east-1.rds.amazonaws.com"
   "database": "inventory"
   "port": "3306"
-  #"user": "admin"
-  #"password": "Artemisateamo96"
